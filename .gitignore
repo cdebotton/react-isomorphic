@@ -1,0 +1,8 @@
+.DS_Store
+thumbs.db
+._*
+node_modules
+npm-debug.log
+
+api/webpack-stats.json
+public/*
