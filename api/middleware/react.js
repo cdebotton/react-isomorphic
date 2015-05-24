@@ -2,6 +2,8 @@
 
 import Router from "react-router";
 
+const DOCTYPE = "<!doctype html>";
+
 export default function react() {
   return function *(next) {
     if (!this.app.react) {
@@ -18,6 +20,8 @@ export default function react() {
 
     const router = createRouter(this.app.react.routes, this.req.url);
     const [History, state] = yield resolveRoutes(router);
+
+    this.body = DOCTYPE;
   };
 };
 

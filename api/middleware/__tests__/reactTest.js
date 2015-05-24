@@ -5,6 +5,7 @@ import chai, { expect } from "chai";
 import { spy } from "sinon";
 import koa from "koa";
 import request from "supertest";
+import react from "../react";
 import React, { Component } from "react";
 import { Route } from "react-router";
 
@@ -37,5 +38,21 @@ class HandlerComponent extends Component {
 const routes = (<Route handler={ HandlerComponent } />);
 
 describe("react", () => {
+  it("should set <!doctype html> on this.body.", done => {
+    let app = koa();
 
+    app.react = { routes };
+    app.use(react());
+
+    request(app.listen())
+      .get("/")
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        res.text.should.match(/^\<\!doctype html\>/);
+        done();
+      });
+  });
 });
