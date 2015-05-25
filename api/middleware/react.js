@@ -1,27 +1,31 @@
 "use strict";
 
+import React from "react";
 import Router from "react-router";
 
-const DOCTYPE = "<!doctype html>";
+export const DOCTYPE = "<!doctype html>";
 
-export default function react() {
+export default function react(params = {}) {
   return function *(next) {
-    if (!this.app.react) {
-      throw new Error(
-        "You must properly config a react object on your koa app."
+    const { HTMLDocument, routes } = params;
+    let html, markup;
+
+    if (routes) {
+      const router = createRouter(params.routes, this.req.url);
+      const [Handler, state] = yield resolveRoutes(router);
+      markup = React.renderToString(
+        <Handler { ...state } />
       );
     }
 
-    if (!this.app.react.routes) {
-      throw new Error(
-        "You must set app.react.routes to an instance of ReactRouter.Routes."
+    if (HTMLDocument) {
+      html = React.renderToStaticMarkup(
+        <HTMLDocument
+          markup={ markup } />
       );
     }
 
-    const router = createRouter(this.app.react.routes, this.req.url);
-    const [History, state] = yield resolveRoutes(router);
-
-    this.body = DOCTYPE;
+    this.body = DOCTYPE + html;
   };
 };
 
