@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alt": "^0.16.6",
     "babel": "^5.4.7",
     "babel-eslint": "^3.1.7",
     "babel-runtime": "^5.4.7",
